@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns: th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>upload Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900|RobotoDraft:400,100,300,500,700,900'>
+<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+<link media="screen" type="text/css" rel="stylesheet" th:href="@{css/uploadStyle.css}" href="../static/css/uploadStyle.css">
+
+</head>
+<body>
+<div class="pen-title">
+  <h1>Submit Your Issue Ticket</h1>
+</div>
+<div class="container">
+  <div class="card"></div>
+  <div class="card">
+    <h1 class="title">Issue Ticket</h1>
+      <div class="input-container">
+        <input type="text" id="customer_name" name="customer_name" required="required"/>
+        <label for="customer_name">Customer Name</label>
+        <div class="bar"></div>
+      </div>
+      <div class="input-container">
+        <input type="text" id="product_name" name="product_name" required="required"/>
+        <label for="product_name">Product Name</label>
+        <div class="bar"></div>
+      </div>
+      <div class="input-container">
+        <input type="text" id="product_version" name="product_version" required="required"/>
+        <label for="product_version">Product Version</label>
+        <div class="bar"></div>
+      </div>
+      <div class="input-container">
+        <input type="text" id="issue_summary" name="issue_summary" required="required"/>
+        <label for="issue_summary">Issue Summary</label>
+        <div class="bar"></div>
+      </div>
+      <div class="input-container">
+        <input id="fileupload" type="file" name = "fileupload"/>
+        <div class="button-container">
+          <button id = "upload-button" onclick="uploadFile()">submit</button>
+        </div>
+      </div>
+  </div>
+</div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script  src="../static/js/uploadScript.js"></script>
+</body>
+  <script>
+    async function uploadFile() {
+      let formData = new FormData();
+      formData.append("customer_name", document.getElementById("customer_name").value);
+      formData.append("product_name", document.getElementById("product_name").value);
+      formData.append("product_version", document.getElementById("product_version").value);
+      formData.append("issue_summary", document.getElementById("issue_summary").value);
+      formData.append("file", fileupload.files[0]);
+      let response = await fetch("/upload", {
+        method: "POST",
+        body: formData
+      })
+      if(response.status == 200) {
+        alert("Submitted Successfully.")
+      }
+    }
+  </script>
+</html>

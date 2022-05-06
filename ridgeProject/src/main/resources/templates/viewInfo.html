@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--    <meta charset="UTF-8">-->
+<!--
+    <link rel="stylesheet" href="style.css"/>
+-->
+    <title>File Download</title>
+    <link media="screen" type="text/css" rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css}" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+    <link media="screen" type="text/css" rel="stylesheet" th:href="@{css/viewInfo.css}" href="../static/css/viewInfo.css">
+</head>
+<body>
+
+<!-- partial:index.partial.html -->
+<div id="bodywrap">
+    <div class="row">
+        <div class="center" style = "width:80%">
+            <div class="scroll-window-wrapper">
+                <h2  class="title">
+                    Search Result!
+                </h2>
+
+                <div class="scroll-window">
+                    <table  name = "table" class="table table-striped table-hover user-list fixed-header">
+                        <thead>
+
+                        <th><div class = "word">Issue_Key</div></th>
+                        <th><div class = "word">Customer_Name</div></th>
+                        <th><div class = "word">Product_Name</div></th>
+                        <th><div class = "word">Product_Version</div></th>
+                        <th><div class = "word">Issue_Summary</div></th>
+                        <th><div class = "word">Issue_Detail</div></th>
+                        </thead>
+                        <tbody id="searchResult">
+
+                        <script>
+                            const queryString = window.location.search;
+                            const urlParams = new URLSearchParams(queryString);
+                            const issue_keys = urlParams.get('issue_keys').split(",,");
+                            const customer_names = urlParams.get('customer_names').split(",,");
+                            const product_names = urlParams.get('product_names').split(",,");
+                            const product_versions = urlParams.get('product_versions').split(",,");
+                            const issue_summaries = urlParams.get('issue_summaries').split(",,");
+
+
+                            let outputHtml = "";
+                            for(let i = 0; i < issue_keys.length-1; i++) {
+                                outputHtml += "<tr>";
+                                outputHtml += "<td>" + issue_keys[i] + "</td>";
+                                outputHtml += "<td>" + customer_names[i] + "</td>";
+                                outputHtml += "<td>" + product_names[i] + "</td>";
+                                outputHtml += "<td>" + product_versions[i] + "</td>";
+                                outputHtml += "<td>" + issue_summaries[i] + "</td>";
+                                var temp = parseInt(issue_keys[i]);
+
+                                outputHtml += "<td class=\"text-right\">";
+                                outputHtml += "<button id = \"download-button\" class = \"button\" onclick=\"download(temp)\">View Detail</button>";
+                                outputHtml += "</td>";
+                                outputHtml += "</tr>";
+                            }
+                            document.getElementById("searchResult").innerHTML = outputHtml;
+                        </script>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- partial -->
+<div>
+
+
+
+
+    <a href="/searchPage" class="button alert tiny">Go back</a>
+
+</div>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+<input id="fileDownload" type="hidden" name = "fileDownload"/>
+
+</body>
+
+<script>
+    async function download(i) {
+        window.location.href = "/down?id="+i;
+
+        // let formData = new FormData();
+        // formData.append("file", fileupload.files[0]);
+        /*let response = await fetch("/test",{ method: "Get"})*/
+        /*if(response.status == 200) {
+            alert("File successfully uploaded.")
+        }*/
+    }
+</script>
+</html>
